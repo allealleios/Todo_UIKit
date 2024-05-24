@@ -39,7 +39,6 @@ class TodoListViewModel {
                 }
             })
             
-            print(todos)
             completion()
         }
     }

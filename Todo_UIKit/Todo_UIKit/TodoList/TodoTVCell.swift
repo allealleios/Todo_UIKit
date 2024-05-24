@@ -24,12 +24,14 @@ class TodoTVCell: UITableViewCell {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
+        label.font = .systemFont(ofSize: 16)
         label.numberOfLines = 0
         return label
     }()
     
     private let contentsLabel: UILabel = {
         let label = UILabel()
+        label.font = .systemFont(ofSize: 12)
         label.numberOfLines = 0
         return label
     }()
@@ -37,6 +39,7 @@ class TodoTVCell: UITableViewCell {
     private let dateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
+        label.font = .systemFont(ofSize: 10)
         return label
     }()
     

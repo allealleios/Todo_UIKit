@@ -47,7 +47,7 @@ class TodosListViewController: UIViewController {
             todoTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             todoTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             todoTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            todoTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            todoTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
     
