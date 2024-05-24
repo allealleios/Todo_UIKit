@@ -81,8 +81,13 @@ class TodoTVCell: UITableViewCell {
     
     func setupCell(todo: Todo, indexPath: IndexPath) {
         self.indexPath = indexPath
-        titleLabel.text = todo.title
-        contentsLabel.text = todo.content
+        
+        
+        let titleAttributes: [NSAttributedString.Key: Any] = todo.isCompleted ? [.strikethroughStyle: NSUnderlineStyle.single.rawValue] : [:]
+        titleLabel.attributedText = NSAttributedString(string: todo.title, attributes: titleAttributes)
+        
+        let contentAttributes: [NSAttributedString.Key: Any] = todo.isCompleted ? [.strikethroughStyle: NSUnderlineStyle.single.rawValue] : [:]
+        contentsLabel.attributedText = NSAttributedString(string: todo.content, attributes: contentAttributes)
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"

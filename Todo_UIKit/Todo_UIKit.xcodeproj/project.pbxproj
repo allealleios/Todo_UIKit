@@ -62,10 +62,10 @@
 		41C9F9012C00123200B4A5B1 /* Todo_UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				41D11CBF2C004AD200FE0B1F /* Model */,
 				41D11CBE2C0029B300FE0B1F /* TodoList */,
 				41D11CBC2C001F5900FE0B1F /* AddTodoViewController.swift */,
 				41C9F91C2C00138300B4A5B1 /* App */,
-				41C9F9182C00132700B4A5B1 /* Todo.swift */,
 				41C9F90B2C00123300B4A5B1 /* Assets.xcassets */,
 				41C9F90D2C00123300B4A5B1 /* LaunchScreen.storyboard */,
 				41C9F9102C00123300B4A5B1 /* Info.plist */,
@@ -90,6 +90,14 @@
 				41C9F91F2C00177E00B4A5B1 /* TodoTVCell.swift */,
 			);
 			path = TodoList;
+			sourceTree = "<group>";
+		};
+		41D11CBF2C004AD200FE0B1F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				41C9F9182C00132700B4A5B1 /* Todo.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
