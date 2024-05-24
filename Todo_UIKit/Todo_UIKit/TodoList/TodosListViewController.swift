@@ -102,5 +102,6 @@ extension TodosListViewController: AddTodoDelegate {
 extension TodosListViewController: TodoCellDelegate {
     func updateCompleted(indexPath: IndexPath) {
         viewModel.toggleComplete(at: indexPath.row)
+        loadTodos()
     }
 }
