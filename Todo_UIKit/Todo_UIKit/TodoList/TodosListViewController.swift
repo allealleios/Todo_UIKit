@@ -54,7 +54,9 @@ class TodosListViewController: UIViewController {
     
     private func loadTodos() {
         viewModel.loadTodos { [weak self] in
-            self?.todoTableView.reloadData()
+            DispatchQueue.main.async {
+                self?.todoTableView.reloadData()
+            }
         }
     }
     
