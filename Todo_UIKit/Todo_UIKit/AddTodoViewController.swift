@@ -16,28 +16,43 @@ class AddTodoViewController: UIViewController {
     
     weak var delegate: AddTodoDelegate?
     
+    private let naviView: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
+    private lazy var naviCancelButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "xmark"), for: .normal)
+        button.tintColor = .black
+        button.addAction(UIAction {[weak self] _ in
+            self?.dismiss(animated: true)
+        }
+                         , for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var titleLabel: UILabel = {
-       let label = UILabel()
-        label.text = "제목"
+        let label = UILabel()
+        label.text = "할 일"
         return label
     }()
     
     private lazy var titleTextField: UITextField = {
-       let textField = UITextField()
-        textField.placeholder = "제목을 입력해주세요."
+        let textField = UITextField()
+        textField.placeholder = "할 일을 입력하세요."
         textField.delegate = self
         return textField
     }()
     
     private lazy var contenLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.text = "내용"
-        label.textAlignment = .center
         return label
     }()
     
     private lazy var contentTextView: UITextView = {
-       let textView = UITextView()
+        let textView = UITextView()
         textView.text = "내용을 입력하세요."
         textView.textColor = .lightGray
         textView.delegate = self
@@ -45,13 +60,13 @@ class AddTodoViewController: UIViewController {
     }()
     
     private lazy var todoAddButton: UIButton = {
-       let button = UIButton()
+        let button = UIButton()
         button.setTitle("등록", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.addTarget(self, action: #selector(tapAddButton), for: .touchUpInside)
         return button
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -61,19 +76,28 @@ class AddTodoViewController: UIViewController {
     private func setupUI(){
         self.view.backgroundColor = .white
         
-        [titleLabel, titleTextField, contenLabel, contentTextView, todoAddButton].forEach {
+        [naviCancelButton, todoAddButton].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            naviView.addSubview($0)
+        }
+        
+        [naviView, titleLabel, titleTextField, contenLabel, contentTextView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             self.view.addSubview($0)
         }
         
-        
         NSLayoutConstraint.activate([
-            titleLabel.widthAnchor.constraint(equalToConstant: 80),
+            naviView.topAnchor.constraint(equalTo: view.topAnchor),
+            naviView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            naviView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            naviView.heightAnchor.constraint(equalToConstant: 44),
             
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
+            titleLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 50),
+            
+            titleLabel.topAnchor.constraint(equalTo: naviView.bottomAnchor, constant: 10),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             
-            titleTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
+            titleTextField.topAnchor.constraint(equalTo: naviView.bottomAnchor, constant: 10),
             titleTextField.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: 10),
             titleTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
@@ -84,16 +108,21 @@ class AddTodoViewController: UIViewController {
             contentTextView.topAnchor.constraint(equalTo: contenLabel.bottomAnchor, constant: 10),
             contentTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             contentTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            contentTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: 200),
-            
-            todoAddButton.topAnchor.constraint(equalTo: contentTextView.bottomAnchor, constant: 10),
-            todoAddButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            contentTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: 200)
+        ])
         
+        
+        NSLayoutConstraint.activate([
+            naviCancelButton.centerYAnchor.constraint(equalTo: naviView.centerYAnchor),
+            naviCancelButton.leadingAnchor.constraint(equalTo: naviView.leadingAnchor, constant: 16),
+            
+            todoAddButton.centerYAnchor.constraint(equalTo: naviView.centerYAnchor),
+            todoAddButton.trailingAnchor.constraint(equalTo: naviView.trailingAnchor, constant: -16)
         ])
         
     }
     
-
+    
     
     @objc func tapAddButton() {
         guard let title = titleTextField.text else {
@@ -114,12 +143,12 @@ class AddTodoViewController: UIViewController {
                 showAlert(isTitle: false)
             }
         }
-
+        
     }
     
     func showAlert(isTitle: Bool) {
-        let title = isTitle ? "제목을 입력해주세요." : "내용을 입력해주세요."
-        let message = "제목 및 내용을 입력하지 않았습니다."
+        let title = isTitle ? "할 일을 입력하세요." : "내용을 입력해주세요."
+        let message = "할 일 및 내용을 입력하지 않았습니다."
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
@@ -128,7 +157,7 @@ class AddTodoViewController: UIViewController {
         
         self.present(alert, animated: true, completion: nil)
     }
-
+    
 }
 
 extension AddTodoViewController: UITextFieldDelegate {

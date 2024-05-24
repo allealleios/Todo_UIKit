@@ -35,7 +35,6 @@ class TodosListViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         loadTodos()
-      
     }
     
     private func setupUI() {
