@@ -31,7 +31,9 @@ class TodoListViewModel {
     func loadTodos(completion: @escaping() -> Void) {
         if let data = UserDefaults.standard.data(forKey: "todos"),
            let savedTodos = try? JSONDecoder().decode([Todo].self, from: data) {
-            todos = savedTodos
+            todos = savedTodos.sorted(by: { before, after in
+                before.date > after.date
+            })
             completion()
         }
     }
