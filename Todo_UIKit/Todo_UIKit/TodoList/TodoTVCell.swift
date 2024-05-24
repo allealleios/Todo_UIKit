@@ -8,9 +8,9 @@
 import UIKit
 
 class TodoTVCell: UITableViewCell {
-    private let checkBoxButton: UIButton = {
+    private lazy var checkBoxButton: UIButton = {
         let button = UIButton(type: .custom)
-        
+        button.addTarget(self, action: #selector(tapCheckButton), for: .touchUpInside)
         return button
     }()
     
@@ -96,9 +96,14 @@ class TodoTVCell: UITableViewCell {
         dateLabel.text = dateString
         
         let checkBoxImage = todo.isCompleted ? "checkmark.rectangle" : "rectangle"
+        checkBoxButton.isSelected = todo.isCompleted
         checkBoxButton.setImage(UIImage(systemName: checkBoxImage), for: .normal)
         
     }
     
-    
+    @objc func tapCheckButton() {
+        checkBoxButton.isSelected = !checkBoxButton.isSelected
+        let checkBoxImage = checkBoxButton.isSelected ? "checkmark.rectangle" : "rectangle"
+        checkBoxButton.setImage(UIImage(systemName: checkBoxImage), for: .normal)
+    }
 }

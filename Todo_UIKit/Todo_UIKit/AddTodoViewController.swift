@@ -7,7 +7,14 @@
 
 import UIKit
 
+
+protocol AddTodoDelegate {
+    func sendSaveTodo(todo: Todo)
+}
+
 class AddTodoViewController: UIViewController {
+    
+    var delegate: AddTodoDelegate?
     
     private lazy var titleLabel: UILabel = {
        let label = UILabel()
@@ -75,7 +82,7 @@ class AddTodoViewController: UIViewController {
             contentTextView.topAnchor.constraint(equalTo: contenLabel.bottomAnchor, constant: 10),
             contentTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             contentTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            
+            contentTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: 200),
             
             todoAddButton.topAnchor.constraint(equalTo: contentTextView.bottomAnchor, constant: 10),
             todoAddButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
@@ -87,8 +94,37 @@ class AddTodoViewController: UIViewController {
 
     
     @objc func tapAddButton() {
-        print("date: \(Date()), title: \(titleTextField.text), content: \(contentTextView.text) ")
-        self.dismiss(animated: true)
+        guard let title = titleTextField.text else {
+            return
+        }
+        guard let content = contentTextView.text else {
+            return
+        }
+        
+        if !title.isEmpty && !content.isEmpty {
+            let todo = Todo(title: title, content: content)
+            delegate?.sendSaveTodo(todo: todo)
+            self.dismiss(animated: true)
+        } else {
+            if title.isEmpty {
+                showAlert(isTitle: true)
+            } else if content.isEmpty {
+                showAlert(isTitle: false)
+            }
+        }
+
+    }
+    
+    func showAlert(isTitle: Bool) {
+        let title = isTitle ? "제목을 입력해주세요." : "내용을 입력해주세요."
+        let message = "제목 및 내용을 입력하지 않았습니다."
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(okAction)
+        
+        self.present(alert, animated: true, completion: nil)
     }
 
 }

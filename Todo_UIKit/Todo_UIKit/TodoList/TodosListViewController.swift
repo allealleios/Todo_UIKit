@@ -34,7 +34,10 @@ class TodosListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        self.todoTableView.reloadData()
+        
+        viewModel.loadTodos { [weak self] in
+            self?.todoTableView.reloadData()
+        }
     }
     
     
@@ -54,22 +57,21 @@ class TodosListViewController: UIViewController {
     
     @objc func didTapTodoAdd() {
         let addVC = AddTodoViewController()
+        addVC.delegate = self
         navigationController?.present(addVC, animated: true)
     }
     
 }
 extension TodosListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return viewModel.todos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: "TodoTVCell",
                                                     for: indexPath) as? TodoTVCell {
-            
-            cell.setupCell(todo: Todo(title: "사이틀", content: "컨텐츠",
-                                      date: Date(), isCompleted: false))
+            cell.setupCell(todo: viewModel.todos[indexPath.row])
             return cell
         }
         return UITableViewCell()
@@ -80,5 +82,16 @@ extension TodosListViewController: UITableViewDelegate, UITableViewDataSource {
                    forRowAt indexPath: IndexPath) {
         
     }
+    
+}
+
+extension TodosListViewController: AddTodoDelegate {
+    func sendSaveTodo(todo: Todo) {
+        viewModel.add(todo: todo)
+        viewModel.loadTodos { [weak self] in
+            self?.todoTableView.reloadData()
+        }
+    }
+    
     
 }

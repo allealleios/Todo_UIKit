@@ -7,9 +7,10 @@
 
 import Foundation
 
-struct Todo {
+struct Todo: Codable {
+    var uuid = UUID()
     let title: String
     let content: String
-    let date: Date
-    let isCompleted: Bool
+    var date: Date = Date()
+    var isCompleted: Bool = false
 }
