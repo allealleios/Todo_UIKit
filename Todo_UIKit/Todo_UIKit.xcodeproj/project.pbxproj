@@ -16,6 +16,7 @@
 		41C9F91B2C00137900B4A5B1 /* TodosListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C9F91A2C00137900B4A5B1 /* TodosListViewController.swift */; };
 		41C9F91E2C00154400B4A5B1 /* TodoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C9F91D2C00154400B4A5B1 /* TodoListViewModel.swift */; };
 		41C9F9202C00177E00B4A5B1 /* TodoTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C9F91F2C00177E00B4A5B1 /* TodoTVCell.swift */; };
+		41D11CBD2C001F5900FE0B1F /* AddTodoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D11CBC2C001F5900FE0B1F /* AddTodoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		41C9F91A2C00137900B4A5B1 /* TodosListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodosListViewController.swift; sourceTree = "<group>"; };
 		41C9F91D2C00154400B4A5B1 /* TodoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewModel.swift; sourceTree = "<group>"; };
 		41C9F91F2C00177E00B4A5B1 /* TodoTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTVCell.swift; sourceTree = "<group>"; };
+		41D11CBC2C001F5900FE0B1F /* AddTodoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 				41C9F90D2C00123300B4A5B1 /* LaunchScreen.storyboard */,
 				41C9F9102C00123300B4A5B1 /* Info.plist */,
 				41C9F91F2C00177E00B4A5B1 /* TodoTVCell.swift */,
+				41D11CBC2C001F5900FE0B1F /* AddTodoViewController.swift */,
 			);
 			path = Todo_UIKit;
 			sourceTree = "<group>";
@@ -156,6 +159,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				41C9F9032C00123200B4A5B1 /* AppDelegate.swift in Sources */,
+				41D11CBD2C001F5900FE0B1F /* AddTodoViewController.swift in Sources */,
 				41C9F9052C00123200B4A5B1 /* SceneDelegate.swift in Sources */,
 				41C9F91B2C00137900B4A5B1 /* TodosListViewController.swift in Sources */,
 				41C9F91E2C00154400B4A5B1 /* TodoListViewModel.swift in Sources */,

@@ -13,7 +13,10 @@ class TodosListViewController: UIViewController {
     private let viewModel = TodoListViewModel()
     
     private lazy var navAddButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: nil)
+        let button = UIBarButtonItem(barButtonSystemItem: .add, 
+                                     target: self,
+                                     action: #selector(didTapTodoAdd))
+        
         return button
     }()
     
@@ -47,6 +50,11 @@ class TodosListViewController: UIViewController {
             todoTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             todoTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+    }
+    
+    @objc func didTapTodoAdd() {
+        let addVC = AddTodoViewController()
+        navigationController?.present(addVC, animated: true)
     }
     
 }
