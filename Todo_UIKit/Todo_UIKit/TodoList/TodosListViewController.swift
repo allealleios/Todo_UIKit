@@ -34,12 +34,9 @@ class TodosListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        
-        viewModel.loadTodos { [weak self] in
-            self?.todoTableView.reloadData()
-        }
+        loadTodos()
+      
     }
-    
     
     private func setupUI() {
         self.view.backgroundColor = .white
@@ -55,6 +52,13 @@ class TodosListViewController: UIViewController {
         ])
     }
     
+    
+    private func loadTodos() {
+        viewModel.loadTodos { [weak self] in
+            self?.todoTableView.reloadData()
+        }
+    }
+    
     @objc func didTapTodoAdd() {
         let addVC = AddTodoViewController()
         addVC.delegate = self
@@ -68,10 +72,10 @@ extension TodosListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         if let cell = tableView.dequeueReusableCell(withIdentifier: "TodoTVCell",
                                                     for: indexPath) as? TodoTVCell {
-            cell.setupCell(todo: viewModel.todos[indexPath.row])
+            cell.setupCell(todo: viewModel.todos[indexPath.row], indexPath: indexPath)
+            cell.delegate = self
             return cell
         }
         return UITableViewCell()
@@ -80,7 +84,11 @@ extension TodosListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, 
                    forRowAt indexPath: IndexPath) {
-        
+    
+        if editingStyle == .delete {
+            viewModel.delete(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
     }
     
 }
@@ -88,10 +96,12 @@ extension TodosListViewController: UITableViewDelegate, UITableViewDataSource {
 extension TodosListViewController: AddTodoDelegate {
     func sendSaveTodo(todo: Todo) {
         viewModel.add(todo: todo)
-        viewModel.loadTodos { [weak self] in
-            self?.todoTableView.reloadData()
-        }
+        loadTodos()
     }
-    
-    
+}
+
+extension TodosListViewController: TodoCellDelegate {
+    func updateCompleted(indexPath: IndexPath) {
+        viewModel.toggleComplete(at: indexPath.row)
+    }
 }

@@ -7,7 +7,14 @@
 
 import UIKit
 
+protocol TodoCellDelegate: AnyObject {
+    func updateCompleted(indexPath: IndexPath)
+}
+
 class TodoTVCell: UITableViewCell {
+    weak var delegate: TodoCellDelegate?
+    private var indexPath: IndexPath?
+    
     private lazy var checkBoxButton: UIButton = {
         let button = UIButton(type: .custom)
         button.addTarget(self, action: #selector(tapCheckButton), for: .touchUpInside)
@@ -41,19 +48,7 @@ class TodoTVCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-     
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
         
-        // Configure the view for the selected state
-    }
-    
     private func setupUI() {
         [checkBoxButton, titleLabel, contentsLabel, dateLabel].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -80,13 +75,11 @@ class TodoTVCell: UITableViewCell {
             dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
         ])
-        
-        
-        
-        
     }
+
     
-    func setupCell(todo: Todo) {
+    func setupCell(todo: Todo, indexPath: IndexPath) {
+        self.indexPath = indexPath
         titleLabel.text = todo.title
         contentsLabel.text = todo.content
         
@@ -105,5 +98,7 @@ class TodoTVCell: UITableViewCell {
         checkBoxButton.isSelected = !checkBoxButton.isSelected
         let checkBoxImage = checkBoxButton.isSelected ? "checkmark.rectangle" : "rectangle"
         checkBoxButton.setImage(UIImage(systemName: checkBoxImage), for: .normal)
+        
+        delegate?.updateCompleted(indexPath: indexPath ?? IndexPath(row: 0, section: 0))
     }
 }

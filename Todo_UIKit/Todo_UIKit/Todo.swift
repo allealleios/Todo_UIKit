@@ -12,5 +12,5 @@ struct Todo: Codable {
     let title: String
     let content: String
     var date: Date = Date()
-    var isCompleted: Bool = false
+    var isCompleted: Bool
 }

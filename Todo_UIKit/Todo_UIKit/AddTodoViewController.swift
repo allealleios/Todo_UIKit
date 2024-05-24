@@ -8,13 +8,13 @@
 import UIKit
 
 
-protocol AddTodoDelegate {
+protocol AddTodoDelegate: AnyObject {
     func sendSaveTodo(todo: Todo)
 }
 
 class AddTodoViewController: UIViewController {
     
-    var delegate: AddTodoDelegate?
+    weak var delegate: AddTodoDelegate?
     
     private lazy var titleLabel: UILabel = {
        let label = UILabel()
@@ -25,6 +25,7 @@ class AddTodoViewController: UIViewController {
     private lazy var titleTextField: UITextField = {
        let textField = UITextField()
         textField.placeholder = "제목을 입력해주세요."
+        textField.delegate = self
         return textField
     }()
     
@@ -39,6 +40,7 @@ class AddTodoViewController: UIViewController {
        let textView = UITextView()
         textView.text = "내용을 입력하세요."
         textView.textColor = .lightGray
+        textView.delegate = self
         return textView
     }()
     
@@ -102,7 +104,7 @@ class AddTodoViewController: UIViewController {
         }
         
         if !title.isEmpty && !content.isEmpty {
-            let todo = Todo(title: title, content: content)
+            let todo = Todo(title: title, content: content, isCompleted: false)
             delegate?.sendSaveTodo(todo: todo)
             self.dismiss(animated: true)
         } else {
@@ -127,4 +129,25 @@ class AddTodoViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
+}
+
+extension AddTodoViewController: UITextFieldDelegate {
+    
+}
+
+extension AddTodoViewController: UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == UIColor.lightGray {
+            textView.text = nil
+            textView.textColor = .black
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "내용을 입력하세요."
+            textView.textColor = .lightGray
+        }
+    }
+    
 }
