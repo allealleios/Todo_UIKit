@@ -16,7 +16,7 @@ class TodosListViewController: UIViewController {
         let button = UIBarButtonItem(barButtonSystemItem: .add, 
                                      target: self,
                                      action: #selector(didTapTodoAdd))
-        
+        button.tintColor = .black
         return button
     }()
     

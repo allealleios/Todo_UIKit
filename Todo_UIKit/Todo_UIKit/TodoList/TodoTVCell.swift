@@ -18,6 +18,7 @@ class TodoTVCell: UITableViewCell {
     private lazy var checkBoxButton: UIButton = {
         let button = UIButton(type: .custom)
         button.addTarget(self, action: #selector(tapCheckButton), for: .touchUpInside)
+        button.tintColor = .black
         return button
     }()
     
@@ -88,7 +89,7 @@ class TodoTVCell: UITableViewCell {
         let dateString = formatter.string(from: todo.date)
         dateLabel.text = dateString
         
-        let checkBoxImage = todo.isCompleted ? "checkmark.rectangle" : "rectangle"
+        let checkBoxImage = todo.isCompleted ? "checkmark.rectangle.fill" : "rectangle"
         checkBoxButton.isSelected = todo.isCompleted
         checkBoxButton.setImage(UIImage(systemName: checkBoxImage), for: .normal)
         
@@ -96,7 +97,7 @@ class TodoTVCell: UITableViewCell {
     
     @objc func tapCheckButton() {
         checkBoxButton.isSelected = !checkBoxButton.isSelected
-        let checkBoxImage = checkBoxButton.isSelected ? "checkmark.rectangle" : "rectangle"
+        let checkBoxImage = checkBoxButton.isSelected ? "checkmark.rectangle.fill" : "rectangle"
         checkBoxButton.setImage(UIImage(systemName: checkBoxImage), for: .normal)
         
         delegate?.updateCompleted(indexPath: indexPath ?? IndexPath(row: 0, section: 0))
