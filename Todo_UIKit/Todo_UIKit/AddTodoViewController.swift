@@ -62,6 +62,7 @@ class AddTodoViewController: UIViewController {
     private lazy var todoAddButton: UIButton = {
         let button = UIButton()
         button.setTitle("등록", for: .normal)
+        button.setTitleColor(.lightGray, for: .disabled)
         button.setTitleColor(.black, for: .normal)
         button.addTarget(self, action: #selector(tapAddButton), for: .touchUpInside)
         return button
@@ -70,7 +71,7 @@ class AddTodoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        
+        updateAddButtonState()
     }
     
     private func setupUI(){
@@ -122,7 +123,11 @@ class AddTodoViewController: UIViewController {
         
     }
     
-    
+    private func updateAddButtonState() {
+        let isTitleEmpty = titleTextField.text?.isEmpty ?? true
+        let isContentEmpty = contentTextView.text.isEmpty || contentTextView.textColor == .lightGray
+        todoAddButton.isEnabled = !isTitleEmpty && !isContentEmpty
+    }
     
     @objc func tapAddButton() {
         guard let title = titleTextField.text else {
@@ -161,7 +166,13 @@ class AddTodoViewController: UIViewController {
 }
 
 extension AddTodoViewController: UITextFieldDelegate {
-    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, 
+                   replacementString string: String) -> Bool {
+          DispatchQueue.main.async {
+              self.updateAddButtonState()
+          }
+          return true
+      }
 }
 
 extension AddTodoViewController: UITextViewDelegate {
@@ -170,6 +181,7 @@ extension AddTodoViewController: UITextViewDelegate {
             textView.text = nil
             textView.textColor = .black
         }
+        updateAddButtonState()
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
@@ -177,6 +189,11 @@ extension AddTodoViewController: UITextViewDelegate {
             textView.text = "내용을 입력하세요."
             textView.textColor = .lightGray
         }
+        updateAddButtonState()
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        updateAddButtonState()
     }
     
 }
