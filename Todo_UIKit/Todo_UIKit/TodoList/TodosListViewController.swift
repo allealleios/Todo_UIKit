@@ -100,6 +100,7 @@ extension TodosListViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension TodosListViewController: AddTodoDelegate {
     func sendSaveTodo(todo: Todo) {
+        // save 후에 table reload하는거 있으면 좋을거 같음
         viewModel.add(todo: todo)
         loadTodos()
     }
