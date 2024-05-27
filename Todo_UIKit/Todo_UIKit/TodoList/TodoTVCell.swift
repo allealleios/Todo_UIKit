@@ -52,7 +52,7 @@ class TodoTVCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-        
+    
     private func setupUI() {
         [checkBoxButton, titleLabel, contentsLabel, dateLabel].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -80,7 +80,7 @@ class TodoTVCell: UITableViewCell {
             dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
         ])
     }
-
+    
     
     
     func setupCell(todo: Todo, indexPath: IndexPath) {
@@ -105,10 +105,13 @@ class TodoTVCell: UITableViewCell {
     }
     
     @objc func tapCheckButton() {
-        checkBoxButton.isSelected = !checkBoxButton.isSelected
+        checkBoxButton.isSelected.toggle()
         let checkBoxImage = checkBoxButton.isSelected ? "checkmark.rectangle.fill" : "rectangle"
         checkBoxButton.setImage(UIImage(systemName: checkBoxImage), for: .normal)
         
-        delegate?.updateCompleted(indexPath: indexPath ?? IndexPath(row: 0, section: 0))
+        if let indexPath = indexPath {
+            delegate?.updateCompleted(indexPath: indexPath)
+        }
+        
     }
 }

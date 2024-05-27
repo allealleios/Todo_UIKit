@@ -37,6 +37,14 @@ class TodosListViewController: UIViewController {
         loadTodos()
     }
     
+    private func bindViewModel() {
+        viewModel.todosUpdated = { [weak self] in
+            DispatchQueue.main.async {
+                self?.todoTableView.reloadData()
+            }
+        }
+    }
+    
     private func setupUI() {
         self.view.backgroundColor = .white
         self.title = "Todo List"
@@ -53,11 +61,7 @@ class TodosListViewController: UIViewController {
     
     
     private func loadTodos() {
-        viewModel.loadTodos { [weak self] in
-            DispatchQueue.main.async {
-                self?.todoTableView.reloadData()
-            }
-        }
+        viewModel.loadTodos()
     }
     
     @objc func didTapTodoAdd() {

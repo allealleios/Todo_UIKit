@@ -9,10 +9,12 @@ import Foundation
 
 
 class TodoListViewModel {
+    var todosUpdated: (() -> Void)?
     
     private(set) var todos: [Todo] = [] {
         didSet {
             saveTodos()
+            todosUpdated?()
         }
     }
     
@@ -28,7 +30,7 @@ class TodoListViewModel {
         todos[index].isCompleted.toggle()
     }
     
-    func loadTodos(completion: @escaping() -> Void) {
+    func loadTodos() {
         if let data = UserDefaults.standard.data(forKey: "todos"),
            let savedTodos = try? JSONDecoder().decode([Todo].self, from: data) {
             todos = savedTodos.sorted(by: { before, after in
@@ -38,8 +40,6 @@ class TodoListViewModel {
                     return !before.isCompleted && after.isCompleted
                 }
             })
-            
-            completion()
         }
     }
     
