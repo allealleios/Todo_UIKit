@@ -86,7 +86,8 @@ class TodoTVCell: UITableViewCell {
     func setupCell(todo: Todo, indexPath: IndexPath) {
         self.indexPath = indexPath
         
-        
+        // titleAttributes랑 contentAttributes가 같은 조건으로 사용되는데 하나만 사용하는거도 괜찮을거 같음
+        // checkBoxButton의 action으로 하면 어떨까 싶습니당
         let titleAttributes: [NSAttributedString.Key: Any] = todo.isCompleted ? [.strikethroughStyle: NSUnderlineStyle.single.rawValue] : [:]
         titleLabel.attributedText = NSAttributedString(string: todo.title, attributes: titleAttributes)
         
