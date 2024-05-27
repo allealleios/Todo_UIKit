@@ -15,6 +15,7 @@ protocol AddTodoDelegate: AnyObject {
 class AddTodoViewController: UIViewController {
     
     weak var delegate: AddTodoDelegate?
+    private var viewModel = AddTodoViewModel()
     
     private let naviView: UIView = {
         let view = UIView()
@@ -27,8 +28,7 @@ class AddTodoViewController: UIViewController {
         button.tintColor = .black
         button.addAction(UIAction {[weak self] _ in
             self?.dismiss(animated: true)
-        }
-                         , for: .touchUpInside)
+        }, for: .touchUpInside)
         return button
     }()
     
@@ -61,6 +61,7 @@ class AddTodoViewController: UIViewController {
     
     private lazy var todoAddButton: UIButton = {
         let button = UIButton()
+        button.isEnabled = false
         button.setTitle("등록", for: .normal)
         button.setTitleColor(.lightGray, for: .disabled)
         button.setTitleColor(.black, for: .normal)
@@ -71,7 +72,7 @@ class AddTodoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        updateAddButtonState()
+        bindViewModel()
     }
     
     private func setupUI(){
@@ -123,56 +124,46 @@ class AddTodoViewController: UIViewController {
         
     }
     
-    private func updateAddButtonState() {
-        let isTitleEmpty = titleTextField.text?.isEmpty ?? true
-        let isContentEmpty = contentTextView.text.isEmpty || contentTextView.textColor == .lightGray
-        todoAddButton.isEnabled = !isTitleEmpty && !isContentEmpty
-    }
-    
-    @objc func tapAddButton() {
-        guard let title = titleTextField.text else {
-            return
-        }
-        guard let content = contentTextView.text else {
-            return
+    private func bindViewModel() {
+        viewModel.isAddButtonEnabled = { [weak self] isEnabled in
+            self?.todoAddButton.isEnabled = isEnabled
         }
         
-        if !title.isEmpty && !content.isEmpty {
-            let todo = Todo(title: title, content: content, isCompleted: false)
-            delegate?.sendSaveTodo(todo: todo)
+        viewModel.showAlert = { [weak self] title, message in
+            self?.showAlert(title: title, message: message)
+        }
+        
+        viewModel.didSaveTodo = {[weak self] todo in
+            guard let self = self else { return }
+            self.delegate?.sendSaveTodo(todo: todo)
             self.dismiss(animated: true)
-        } else {
-            if title.isEmpty {
-                showAlert(isTitle: true)
-            } else if content.isEmpty {
-                showAlert(isTitle: false)
-            }
         }
         
     }
     
-    func showAlert(isTitle: Bool) {
-        let title = isTitle ? "할 일을 입력하세요." : "내용을 입력해주세요."
-        let message = "할 일 및 내용을 입력하지 않았습니다."
-        
+    private func showAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alert.addAction(okAction)
-        
         self.present(alert, animated: true, completion: nil)
     }
+    
+    
+    @objc func tapAddButton() {
+        viewModel.saveTodo()
+    }
+    
     
 }
 
 extension AddTodoViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, 
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
-          DispatchQueue.main.async {
-              self.updateAddButtonState()
-          }
-          return true
-      }
+        DispatchQueue.main.async {[weak self] in
+            self?.viewModel.title = textField.text ?? ""
+        }
+        return true
+    }
 }
 
 extension AddTodoViewController: UITextViewDelegate {
@@ -181,7 +172,7 @@ extension AddTodoViewController: UITextViewDelegate {
             textView.text = nil
             textView.textColor = .black
         }
-        updateAddButtonState()
+        viewModel.content = textView.text
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
@@ -189,11 +180,11 @@ extension AddTodoViewController: UITextViewDelegate {
             textView.text = "내용을 입력하세요."
             textView.textColor = .lightGray
         }
-        updateAddButtonState()
+        viewModel.content = textView.text
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        updateAddButtonState()
+        viewModel.content = textView.text
     }
     
 }

@@ -63,7 +63,7 @@ class TodosListViewController: UIViewController {
     @objc func didTapTodoAdd() {
         let addVC = AddTodoViewController()
         addVC.delegate = self
-        navigationController?.present(addVC, animated: true)
+        self.present(addVC, animated: true)
     }
     
 }
