@@ -159,11 +159,13 @@ class AddTodoViewController: UIViewController {
 extension AddTodoViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
-        DispatchQueue.main.async {[weak self] in
-            self?.viewModel.title = textField.text ?? ""
-        }
+//        DispatchQueue.main.async {[weak self] in
+            self.viewModel.title = textField.text ?? ""
+//        }
+        
         return true
     }
+    
 }
 
 extension AddTodoViewController: UITextViewDelegate {

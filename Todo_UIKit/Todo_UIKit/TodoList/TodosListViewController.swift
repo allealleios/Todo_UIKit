@@ -62,6 +62,7 @@ class TodosListViewController: UIViewController {
     
     private func loadTodos() {
         viewModel.loadTodos()
+        bindViewModel()
     }
     
     @objc func didTapTodoAdd() {
