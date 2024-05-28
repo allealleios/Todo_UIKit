@@ -87,7 +87,12 @@ class TodoTVCell: UITableViewCell {
         self.indexPath = indexPath
         
         // titleAttributes랑 contentAttributes가 같은 조건으로 사용되는데 하나만 사용하는거도 괜찮을거 같음
-        // checkBoxButton의 action으로 하면 어떨까 싶습니당
+        // John: 이런식으로 묶을 순 있겠네요.
+        //        let attributes: [NSAttributedString.Key: Any] = todo.isCompleted ? [.strikethroughStyle: NSUnderlineStyle.single.rawValue] : [:]
+        //
+        //        titleLabel.attributedText = NSAttributedString(string: todo.title, attributes: attributes)
+        //        contentsLabel.attributedText = NSAttributedString(string: todo.content, attributes: attributes)
+        
         let titleAttributes: [NSAttributedString.Key: Any] = todo.isCompleted ? [.strikethroughStyle: NSUnderlineStyle.single.rawValue] : [:]
         titleLabel.attributedText = NSAttributedString(string: todo.title, attributes: titleAttributes)
         

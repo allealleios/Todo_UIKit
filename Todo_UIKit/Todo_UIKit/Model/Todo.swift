@@ -8,6 +8,7 @@
 import Foundation
 
 struct Todo: Codable {
+    // John: uuid가 안쓰이고 있는데 빼도 되지않나요?
     var uuid = UUID()
     let title: String
     let content: String

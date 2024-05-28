@@ -141,6 +141,7 @@ class AddTodoViewController: UIViewController {
         
     }
     
+    // John: 이 함수가 사용되는 경우가 언제인지 궁금합니다.
     private func showAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
@@ -177,6 +178,7 @@ extension AddTodoViewController: UITextViewDelegate {
         viewModel.content = textView.text
     }
     
+    // John: AddTodo뷰모델에 validateInput 함수랑 중복인거같아요.
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
             textView.text = "내용을 입력하세요."
